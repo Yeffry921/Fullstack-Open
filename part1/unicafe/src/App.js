@@ -7,33 +7,60 @@ const Button = ({onClick, text}) => {
 }
 
 const Statistics = (props) => {
+
+  const total = props.stats.good + props.stats.bad + props.stats.neutral
+  const average = props.stats.good + props.stats.neutral + props.stats.bad / 3
+  const positive = (props.stats.good / total)  * 100 
+
+  if(total === 0) {
+    return(
+      <p>No feedback given</p>
+    )
+  }
+
+  return (
+    <div>
+      <StatisticsLine text='Good' stat={props.stats.good}/>
+      <StatisticsLine text='Neutral' stat={props.stats.neutral}/>
+      <StatisticsLine text='Bad' stat={props.stats.bad}/>
+      <StatisticsLine text='Total' stat={total}/>
+      <StatisticsLine text='Average'stat={average}/>
+      <StatisticsLine text='Positive' stat={positive}/>
+    </div>
+  )
+}
+
+const StatisticsLine = (props) => {
   return (
     <p>{props.text}: {props.stat}</p>
   )
 }
 
 const App = () => {
-  const [ good, setGood ] = useState(0)
-  const [ neutral, setNeutral ] = useState(0)
-  const [ bad, setBad ] = useState(0)
+  const [ feedback, setFeedback ] = useState({
+    good: 0, neutral: 0, bad: 0,
+  })
 
-  const total = good + neutral + bad
-  const average = good + neutral + bad / 3
-  const positive = (good / total)  * 100
-
-  
   const handleSetGood = () => {
-    setGood(good + 1)
+    setFeedback({
+      ...feedback,
+      good: feedback.good + 1,
+    })
   }
 
   const handleSetNeutral = () => {
-    setNeutral(neutral + 1)
+    setFeedback({
+      ...feedback,
+      neutral: feedback.neutral + 1,
+    })
   }
 
   const handleSetBad = () => {
-    setBad(bad + 1)
+    setFeedback({
+      ...feedback,
+      bad: feedback.bad + 1
+    })
   }
-
 
   return (
     <div>
@@ -43,12 +70,7 @@ const App = () => {
       <Button onClick={handleSetBad} text='Bad'/>
 
       <h1>Statistics</h1>
-      <Statistics text='Good' stat={good}/>
-      <Statistics text='Neutral' stat={neutral}/>
-      <Statistics text='Bad' stat={bad}/>
-      <Statistics text='Total' stat={total}/>
-      <Statistics text='Average' stat={average}/>
-      <Statistics text='Positive' stat={positive}/>
+      <Statistics stats={feedback}/>
     </div>
   )
 }
