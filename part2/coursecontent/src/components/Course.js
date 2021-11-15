@@ -7,11 +7,22 @@ const Header = ({ name }) => {
 const Content = ({ parts }) => {
   console.log(parts);
   return (
-    <ul>
+    <div>
       {parts.map((part) => 
-        <li key={part.id}>{part.name} {part.exercises}</li>
+        <p key={part.id}>{part.name} {part.exercises}</p>
       )}
-    </ul>
+    </div>
+  )
+}
+
+
+const Total = ({ parts }) => {
+  const total = parts.reduce((acc, curr) => {
+    return curr.exercises + acc
+  }, 0)
+
+  return (
+    <p>Total number of exercises {total}</p>
   )
 }
 
@@ -20,6 +31,7 @@ const Course = ({ course }) => {
     <div>
       <Header name={course.name}/>
       <Content parts={course.parts}/>
+      <Total parts={course.parts}/>
     </div>
     
   )
