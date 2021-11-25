@@ -1,5 +1,15 @@
 import { useState } from 'react'
 
+const Person = (props) => {
+  return (
+    <div>
+      {props.data.map((person) => 
+        <p key={person.id}>{person.name}</p>
+      )}
+    </div>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
@@ -11,11 +21,18 @@ const App = () => {
   const handleAddPerson = (event) => {
     event.preventDefault()
 
+    const nameDup = persons.find((person) => person.name === newName)
+
+    if(nameDup) {
+      alert(`${nameDup.name} is already added to phonebook `)
+      return;
+    }
+
     const personObject = {
       name: newName,
       id: persons.length + 1
     }
-
+    
     setPersons(persons.concat(personObject))
     setNewName('')
   }
@@ -33,9 +50,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map((person) => 
-          <p key={persons.id}>{person.name}</p>
-        )}
+        <Person data={persons}/>
       </div>
     </div>
   )
