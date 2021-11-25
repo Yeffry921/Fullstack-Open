@@ -4,7 +4,7 @@ const Person = (props) => {
   return (
     <div>
       {props.data.map((person) => 
-        <p key={person.id}>{person.name}</p>
+        <p key={person.id}>{person.name} - {person.phone}</p>
       )}
     </div>
   )
@@ -13,9 +13,14 @@ const Person = (props) => {
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
+  const [ newPhone, setNewPhone ] = useState('')
 
-  const handlePersonChnage = (event) => {
+  const handlePersonChange = (event) => {
     setNewName(event.target.value)
+  }
+
+  const handlePhoneChange = (event) => {
+    setNewPhone(event.target.value)
   }
 
   const handleAddPerson = (event) => {
@@ -30,19 +35,23 @@ const App = () => {
 
     const personObject = {
       name: newName,
+      phone: newPhone,
       id: persons.length + 1
     }
     
     setPersons(persons.concat(personObject))
     setNewName('')
   }
-
+  console.log(persons)
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={handleAddPerson}>
         <div> 
-          Name: <input value={newName} onChange={handlePersonChnage}/> 
+          Name: <input type='text' value={newName} onChange={handlePersonChange}/> 
+        </div>
+        <div> 
+          Phone: <input type='tel' value={newPhone} onChange={handlePhoneChange}/> 
         </div>
         <div>
           <button type='submit'>Add</button>
