@@ -1,6 +1,8 @@
 # Fullstack-Open
 
-Progress from Fullstack Open Course
+This repo contains exercise solutions for the 2021 edition of the Full Stack Open course from the University of Helsinki.
+
+https://fullstackopen.com/en/
 
 # General
 
