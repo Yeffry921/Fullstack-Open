@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
 
-import CountryData from "./components/CountryData";
+import CountryField from "./components/CountryField";
 
 const App = () => {
 
   const [ countries, setCountries ] = useState([])
   const [ searched, setSearched ] = useState([])
+  const [ searchQuery, setSearchQuery ] = useState('')
 
   useEffect(() => {
     axios
@@ -34,7 +35,7 @@ const App = () => {
         </label>
 
         <div>
-          <CountryData data={searched}/>
+          <CountryField data={searched} setSearched={setSearched}/>
         </div>
       </header>
     </div>
