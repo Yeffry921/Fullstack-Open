@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CountryFilter = ({ countryInfo, setSearched }) => {
-  console.log(countryInfo)
     return (
        <React.Fragment>
         {countryInfo.map((country) => 

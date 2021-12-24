@@ -7,8 +7,7 @@ const App = () => {
 
   const [ countries, setCountries ] = useState([])
   const [ searched, setSearched ] = useState([])
-  const [ searchQuery, setSearchQuery ] = useState('')
-
+  
   useEffect(() => {
     axios
       .get('https://restcountries.com/v3.1/all')
