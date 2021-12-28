@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import phoneService from './services/phoneRequest'
 
@@ -69,13 +68,25 @@ const App = () => {
     setNewPhone(event.target.value)
   }
 
+  const updatePerson = (data) => {
+    const personUrl = `http://localhost:3001/persons/${data.id}`
+    const changedPerson = { ...data, number: newPhone }
+    phoneService
+      .update(personUrl, changedPerson)
+      .then((response) => {
+        setPersons(persons.map((person) => person.id !== data.id ? person : response.data))
+      })
+  }
+
   const handleAddPerson = (event) => {
     event.preventDefault()
 
-    const nameDup = persons.find((person) => person.name === newName)
+    const nameDup = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
 
     if(nameDup) {
-      alert(`${nameDup.name} is already added to phonebook `)
+      if(window.confirm(`${nameDup.name} is already added to phonebook, replace the old number with a new one? `)) {
+        updatePerson(nameDup)
+      }  
       return;
     }
 
@@ -87,9 +98,9 @@ const App = () => {
     phoneService
       .create(personObject)
       .then((response) => {
-        console.log(response)
         setPersons(persons.concat(response.data))
         setNewName('')
+        setNewPhone('')
       })
   }
 
