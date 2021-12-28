@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Person = (props) => {
+import phoneService from './services/phoneRequest'
+
+const Person = ({ data, onDeletePerson}) => {
   return (
     <div>
-      {props.data.map((person) => 
-        <p key={person.id}>{person.name} - {person.number}</p>
+      {data.map((person) => 
+        <p key={person.id}>{person.name} - {person.number}
+          <button onClick={() => onDeletePerson(person)}>delete</button>
+        </p>
       )}
     </div>
   )
@@ -41,8 +45,8 @@ const App = () => {
   const [ searchTerm, setSearchTerm ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    phoneService
+      .getAll('http://localhost:3001/persons')
       .then((response) => {
         setPersons(response.data)
       })
@@ -80,12 +84,29 @@ const App = () => {
       number: newPhone,
       id: persons.length + 1
     }
-    axios
-      .post('http://localhost:3001/persons', personObject)
+    phoneService
+      .create(personObject)
       .then((response) => {
+        console.log(response)
         setPersons(persons.concat(response.data))
         setNewName('')
       })
+  }
+
+  const handleDeletePerson = (person) => {
+    if(window.confirm(`Delete ${person.name} ?`)) {
+      phoneService
+        .deleteItem(person.id)
+        .then(() => {
+          return phoneService.getAll();
+        })
+        .then((response) => {
+          setPersons(response.data)
+        })
+        .catch((err) => {
+          console.log('pondering....')
+        })
+      }
   }
   return (
     <div>
@@ -104,7 +125,7 @@ const App = () => {
       
       <h2>Numbers</h2>
       
-      <Person data={personsToShow}/>
+      <Person data={personsToShow} onDeletePerson={handleDeletePerson}/>
       
     </div>
   )
