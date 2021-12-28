@@ -9,8 +9,8 @@ const deleteItem = (id) => {
   return axios.delete(`${baseUrl}/${id}`)
 }
 
-const update = (data) => {
-  return axios.put(baseUrl, data)
+const update = (url, data) => {
+  return axios.put(url , data)
 }
 
 const create = (data) => {
