@@ -1,6 +1,19 @@
 import { useState, useEffect } from 'react'
 
 import phoneService from './services/phoneRequest'
+import './index.css'
+import { v4 as uuidv4 } from 'uuid'
+
+const Message = ({ message }) => {
+  if(message === null) {
+    return null
+  }
+  return (
+    <div className='success'>
+      {message}
+    </div>
+  )
+}
 
 const Person = ({ data, onDeletePerson}) => {
   return (
@@ -42,6 +55,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ searchTerm, setSearchTerm ] = useState('')
+  const [ message, setMessage ] = useState(null)
 
   useEffect(() => {
     phoneService
@@ -75,6 +89,10 @@ const App = () => {
       .update(personUrl, changedPerson)
       .then((response) => {
         setPersons(persons.map((person) => person.id !== data.id ? person : response.data))
+        setNewName('')
+        setNewPhone('')
+        setMessage(`${response.data.name} was updated`)
+        setTimeout(() => setMessage(null), 5000)
       })
   }
 
@@ -93,14 +111,17 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newPhone,
-      id: persons.length + 1
+      id: uuidv4()
     }
+
     phoneService
       .create(personObject)
       .then((response) => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewPhone('')
+        setMessage(`Added ${response.data.name}`)
+        setTimeout(() => setMessage(null), 5000)
       })
   }
 
@@ -125,7 +146,7 @@ const App = () => {
       <Filter value={searchTerm} onChange={handleFilterChange}/>
       
       <h2>Add new</h2>
-
+      <Message message={message}/>
       <PersonForm 
         onSubmit={handleAddPerson} 
         valueName={newName}
