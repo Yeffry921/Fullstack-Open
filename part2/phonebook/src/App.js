@@ -5,12 +5,12 @@ import './index.css'
 import { v4 as uuidv4 } from 'uuid'
 
 const Message = ({ message }) => {
-  if(message === null) {
+  if(message.name === null) {
     return null
   }
   return (
-    <div className='success'>
-      {message}
+    <div className={message.type}>
+      {message.name}
     </div>
   )
 }
@@ -55,7 +55,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ searchTerm, setSearchTerm ] = useState('')
-  const [ message, setMessage ] = useState(null)
+  const [ message, setMessage ] = useState({ name: null, type: ''})
+ 
 
   useEffect(() => {
     phoneService
@@ -84,15 +85,26 @@ const App = () => {
 
   const updatePerson = (data) => {
     const personUrl = `http://localhost:3001/persons/${data.id}`
-    const changedPerson = { ...data, number: newPhone }
+    const searchedPerson = persons.find((person) => person.id === data.id)
+    const changedPerson = { ...searchedPerson, number: newPhone }
     phoneService
       .update(personUrl, changedPerson)
       .then((response) => {
         setPersons(persons.map((person) => person.id !== data.id ? person : response.data))
         setNewName('')
         setNewPhone('')
-        setMessage(`${response.data.name} was updated`)
+        setMessage({
+          name: `${response.data.name} was updated`, 
+          type: 'success'
+        })
         setTimeout(() => setMessage(null), 5000)
+      })
+      .catch((err) => {
+        setMessage({
+          name: `Information of ${changedPerson.name} has already deleted from server`,
+          type: 'error'
+        })
+        setPersons(persons.filter((person) => person.id !== data.id))
       })
   }
 
@@ -120,8 +132,16 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setNewName('')
         setNewPhone('')
-        setMessage(`Added ${response.data.name}`)
-        setTimeout(() => setMessage(null), 5000)
+        setMessage({
+          name: `Added ${response.data.name}`,
+          type: 'success'
+        })
+        setTimeout(() => {
+          setMessage({
+            name: null,
+            type: ''
+          })
+        }, 5000)
       })
   }
 
@@ -136,7 +156,18 @@ const App = () => {
           setPersons(response.data)
         })
         .catch((err) => {
-          console.log('pondering....')
+          setMessage({
+            name: `Information of ${person.name} has already deleted from server`,
+            type: 'error'
+          })
+          setPersons(persons.filter((personItem) => personItem.id !== person.id))
+          setTimeout(() => {
+            setMessage({
+              name: null,
+              type: ''
+            })
+          }, 5000)
+          
         })
       }
   }
@@ -146,7 +177,7 @@ const App = () => {
       <Filter value={searchTerm} onChange={handleFilterChange}/>
       
       <h2>Add new</h2>
-      <Message message={message}/>
+      <Message message={message} />
       <PersonForm 
         onSubmit={handleAddPerson} 
         valueName={newName}
