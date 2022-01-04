@@ -84,7 +84,7 @@ const App = () => {
   }
 
   const updatePerson = (data) => {
-    const personUrl = `http://localhost:3001/persons/${data.id}`
+    const personUrl = `api/persons/${data.id}`
     const searchedPerson = persons.find((person) => person.id === data.id)
     const changedPerson = { ...searchedPerson, number: newPhone }
     phoneService
