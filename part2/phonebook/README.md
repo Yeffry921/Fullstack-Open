@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Phonebook is part of Fullstack Open 2021 curriculum. The goal of the application is to perform basic CRUD operations. 
+
+
 ## Available Scripts
 
 In the project directory, you can run:
