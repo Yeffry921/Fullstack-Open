@@ -60,7 +60,7 @@ const App = () => {
 
   useEffect(() => {
     phoneService
-      .getAll('http://localhost:3001/persons')
+      .getAll()
       .then((response) => {
         setPersons(response.data)
       })
