@@ -143,6 +143,9 @@ const App = () => {
           })
         }, 5000)
       })
+      .catch((error) => {
+        setMessage({ name: error.response.data.error, type: 'error'})
+      })
   }
 
   const handleDeletePerson = (person) => {
