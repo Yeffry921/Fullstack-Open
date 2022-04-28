@@ -84,7 +84,7 @@ const App = () => {
   }
 
   const updatePerson = (data) => {
-    const personUrl = `api/persons/${data.id}`
+    const personUrl = `http://localhost:3001/api/persons/${data.id}`
     const searchedPerson = persons.find((person) => person.id === data.id)
     const changedPerson = { ...searchedPerson, number: newPhone }
     phoneService
@@ -97,7 +97,7 @@ const App = () => {
           name: `${response.data.name} was updated`, 
           type: 'success'
         })
-        setTimeout(() => setMessage(null), 5000)
+        setTimeout(() => setMessage({ name: null, type: '' }), 5000)
       })
       .catch((err) => {
         setMessage({
