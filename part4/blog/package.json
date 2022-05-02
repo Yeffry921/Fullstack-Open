@@ -1,0 +1,29 @@
+{
+  "name": "fullstack-open",
+  "version": "1.0.0",
+  "description": "This repo contains exercise solutions for the 2021 edition of the Full Stack Open course from the University of Helsinki.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yeffry921/Fullstack-Open.git"
+  },
+  "keywords": [],
+  "author": "ANTONI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yeffry921/Fullstack-Open/issues"
+  },
+  "homepage": "https://github.com/Yeffry921/Fullstack-Open#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.1"
+  }
+}
